@@ -3,10 +3,10 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
-import { CoffeesModule } from './coffees/coffees.module';
 import { CommonModule } from './common/common.module';
+import { AuthModule } from './auth/auth.module';
 import appConfig from './config/app.config';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -19,16 +19,20 @@ import appConfig from './config/app.config';
         password: process.env.DATABASE_PASSWORD,
         database: process.env.DATABASE_NAME,
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: process.env.NODE_ENV === 'development' ? true : false,
+        ssl: {
+          rejectUnauthorized: false,
+        },
       }),
     }),
     ConfigModule.forRoot({
       ignoreEnvFile: process.env.NODE_ENV === 'production' ? true : false,
+      envFilePath: process.env.NODE_ENV !== 'production' ? '.env' : null,
       load: [appConfig],
     }),
-    CoffeesModule,
-    CoffeeRatingModule,
+    UsersModule,
     CommonModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
