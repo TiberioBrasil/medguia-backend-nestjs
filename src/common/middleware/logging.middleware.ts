@@ -16,8 +16,8 @@ export class LoggingMiddleware implements NestMiddleware {
       const endTime = performance.now();
       const totalTime = (endTime - startTime).toFixed(2);
 
-      this.logger.log(
-        `${method} ${url} - ${statusCode} ${totalTime}ms - ${userAgent} ${ip}`,
+      console.info(
+        `${method} ${url} - ${statusCode} ${totalTime}ms - ${userAgent} ${ip} - ${moment().format()}`,
       );
     });
     next();
