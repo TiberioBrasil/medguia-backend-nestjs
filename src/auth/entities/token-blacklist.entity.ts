@@ -18,7 +18,7 @@ export default class TokenBlacklist {
    */
   @Column({ nullable: false })
   @OneToOne(() => User)
-  sub: number;
+  sub: string;
 
   /**
    * Valor do iat do token (timestamp que quando foi criado)

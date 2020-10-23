@@ -18,6 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
+      passReqToCallback: true,
       secretOrKey: configService.get('JWT_SECRET'),
     });
   }
@@ -25,6 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(req: Request, payload: TokenPayload): Promise<Partial<User>> {
     // @ts-ignore
     const token = req.headers.authorization.replace(/^Bearer\s+/, '');
+
     const blacklistToken = await this.blacklistRepo.findOne({
       where: { token, sub: payload.sub },
     });
@@ -33,6 +35,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException();
     }
 
-    return { id: payload.sub.toString() };
+    return { id: payload.sub };
   }
 }

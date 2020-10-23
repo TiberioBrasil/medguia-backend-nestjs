@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Profile } from '../profiles/entities/profile.entity';
 import { User } from '../users/entities/user.entity';
 import { UsersModule } from '../users/users.module';
+import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { EncryptionService } from './encryption.service';
 import TokenBlacklist from './entities/token-blacklist.entity';
@@ -28,6 +29,7 @@ import { LocalStrategy } from './local.strategy';
     UsersModule,
     ConfigModule,
   ],
+  controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy, EncryptionService],
   exports: [AuthService],
 })

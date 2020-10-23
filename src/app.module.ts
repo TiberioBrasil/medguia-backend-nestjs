@@ -7,6 +7,8 @@ import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
 import appConfig from './config/app.config';
 import { UsersModule } from './users/users.module';
+import { ProfilesModule } from './profiles/profiles.module';
+import { ActionsModule } from './actions/actions.module';
 
 @Module({
   imports: [
@@ -23,7 +25,6 @@ import { UsersModule } from './users/users.module';
         ssl: {
           rejectUnauthorized: false,
         },
-        entities: ['src/**/*.entity.js'],
       }),
     }),
     ConfigModule.forRoot({
@@ -31,9 +32,11 @@ import { UsersModule } from './users/users.module';
       envFilePath: process.env.NODE_ENV !== 'production' ? '.env' : null,
       load: [appConfig],
     }),
-    UsersModule,
-    CommonModule,
+    ActionsModule,
     AuthModule,
+    CommonModule,
+    ProfilesModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
