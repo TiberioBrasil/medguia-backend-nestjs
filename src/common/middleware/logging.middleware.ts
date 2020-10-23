@@ -1,5 +1,5 @@
 import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
-import * as moment from 'moment';
+import moment from 'moment';
 import { performance } from 'perf_hooks';
 
 @Injectable()

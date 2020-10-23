@@ -1,8 +1,11 @@
+import { Profile } from '../../profiles/entities/profile.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -27,6 +30,12 @@ export class User {
   @Column({ nullable: true, default: null })
   recoverPassword: string;
 
+  @Column({ name: 'profileId', default: null })
+  profileId: number;
+
+  @Column({ nullable: false, default: true })
+  status: boolean;
+
   @CreateDateColumn()
   created_at: Date;
 
@@ -35,4 +44,11 @@ export class User {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  @ManyToOne(
+    () => Profile,
+    profile => profile.users,
+  )
+  @JoinColumn({ name: 'profileId' })
+  profile: Profile;
 }

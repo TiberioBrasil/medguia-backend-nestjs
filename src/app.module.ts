@@ -23,6 +23,7 @@ import { UsersModule } from './users/users.module';
         ssl: {
           rejectUnauthorized: false,
         },
+        entities: ['src/**/*.entity.js'],
       }),
     }),
     ConfigModule.forRoot({

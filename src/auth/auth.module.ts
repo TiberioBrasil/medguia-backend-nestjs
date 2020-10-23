@@ -1,17 +1,22 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Profile } from '../profiles/entities/profile.entity';
+import { User } from '../users/entities/user.entity';
 import { UsersModule } from '../users/users.module';
 import { AuthService } from './auth.service';
+import { EncryptionService } from './encryption.service';
+import TokenBlacklist from './entities/token-blacklist.entity';
 import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
 
 @Module({
   imports: [
-    PassportModule.register({ defaultStrategy: 'jwt' }),
-    UsersModule,
-    ConfigModule,
+    TypeOrmModule.forFeature([User, Profile, TokenBlacklist]),
+    PassportModule.register({ defaultStrategy: 'jwt', session: false }),
+    forwardRef(() => UsersModule),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -20,8 +25,10 @@ import { LocalStrategy } from './local.strategy';
         signOptions: { expiresIn: configService.get('JWT_EXPIRES_IN') },
       }),
     }),
+    UsersModule,
+    ConfigModule,
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, EncryptionService],
   exports: [AuthService],
 })
 export class AuthModule {}
