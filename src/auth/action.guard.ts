@@ -7,8 +7,8 @@ import {
 import { Reflector } from '@nestjs/core';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { Profile } from '../profiles/entities/profile.entity';
-import { User } from '../users/entities/user.entity';
 import { EntityManager } from 'typeorm';
+import { User } from '../users/entities/user.entity';
 
 /* eslint-disable-next-line */
 export const RequireAction = (action: string) =>
@@ -28,18 +28,23 @@ export class ActionGuard implements CanActivate {
     );
 
     if (!targetAction) {
+      console.log('Route: not protected');
+      return true;
+    }
+
+    const openActions = ['users.create'];
+    if (openActions.indexOf(targetAction) > -1) {
+      console.log('Route: opened');
       return true;
     }
 
     const { url, method, user } = context.switchToHttp().getRequest();
+    const { profileId } = await this.entityManager.findOneOrFail(User, user.id);
 
-    const { profileId } = await this.entityManager.findOneOrFail(
-      User,
-      user.id,
-      {
-        select: ['profileId'],
-      },
-    );
+    if (profileId === 1) {
+      console.log('Route: Admin access');
+      return true;
+    }
 
     const { actions } = await this.entityManager.findOneOrFail(
       Profile,

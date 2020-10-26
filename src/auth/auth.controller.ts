@@ -36,7 +36,6 @@ export class AuthController {
   @UseGuards(AuthGuard())
   async destroy(@Headers() headers: Record<string, string>): Promise<void> {
     const { authorization } = headers;
-    console.log(authorization);
     const [, ...token] = authorization.split(' ');
     await this.authService.destroy(token.join(''));
   }

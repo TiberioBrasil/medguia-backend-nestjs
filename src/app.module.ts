@@ -9,6 +9,9 @@ import appConfig from './config/app.config';
 import { UsersModule } from './users/users.module';
 import { ProfilesModule } from './profiles/profiles.module';
 import { ActionsModule } from './actions/actions.module';
+import { DoctorsModule } from './doctors/doctors.module';
+import { SecretariesModule } from './secretaries/secretaries.module';
+import { PatientsModule } from './patients/patients.module';
 
 @Module({
   imports: [
@@ -37,6 +40,9 @@ import { ActionsModule } from './actions/actions.module';
     CommonModule,
     ProfilesModule,
     UsersModule,
+    DoctorsModule,
+    SecretariesModule,
+    PatientsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

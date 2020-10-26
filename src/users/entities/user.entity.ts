@@ -6,9 +6,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Doctor } from '../../doctors/entities/doctor.entity';
+import { Secretary } from 'src/secretaries/entities/secretary.entity';
 
 @Entity()
 export class User {
@@ -30,8 +33,14 @@ export class User {
   @Column({ nullable: true, default: null })
   recoverPassword: string;
 
-  @Column({ name: 'profileId', default: null })
+  @Column({ nullable: true, default: null })
   profileId: number;
+
+  @Column({ nullable: true, default: null })
+  doctorId: string;
+
+  @Column({ nullable: true, default: null })
+  secretaryId: string;
 
   @Column({ nullable: false, default: true })
   status: boolean;
@@ -50,5 +59,19 @@ export class User {
     profile => profile.users,
   )
   @JoinColumn({ name: 'profileId' })
-  profile: Profile;
+  profile?: Profile;
+
+  @OneToOne(
+    () => Doctor,
+    doctor => doctor.user,
+  )
+  @JoinColumn({ name: 'doctorId' })
+  doctor?: Doctor;
+
+  @OneToOne(
+    () => Secretary,
+    secretary => secretary.user,
+  )
+  @JoinColumn({ name: 'secretaryId' })
+  secretary?: Secretary;
 }

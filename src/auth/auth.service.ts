@@ -32,7 +32,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new BadRequestException(`Email or password invalid`);
+      throw new BadRequestException(`Email or password invalid #001`);
     }
 
     const { status } = user;
@@ -46,7 +46,7 @@ export class AuthService {
     try {
       await this.encryptionService.compareOrFail(password, hash);
     } catch (err) {
-      throw new BadRequestException(`Email or password invalid`);
+      throw new BadRequestException(`Email or password invalid #002`);
     }
 
     return user;
