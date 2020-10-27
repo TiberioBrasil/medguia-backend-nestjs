@@ -1,17 +1,18 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ActionsModule } from './actions/actions.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
+import { CommonModule } from './common/common.module';
 import appConfig from './config/app.config';
-import { UsersModule } from './users/users.module';
-import { ProfilesModule } from './profiles/profiles.module';
-import { ActionsModule } from './actions/actions.module';
 import { DoctorsModule } from './doctors/doctors.module';
-import { SecretariesModule } from './secretaries/secretaries.module';
+import { LocationsModule } from './locations/locations.module';
 import { PatientsModule } from './patients/patients.module';
+import { ProfilesModule } from './profiles/profiles.module';
+import { SecretariesModule } from './secretaries/secretaries.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { PatientsModule } from './patients/patients.module';
     DoctorsModule,
     SecretariesModule,
     PatientsModule,
+    LocationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
