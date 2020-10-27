@@ -1,22 +1,29 @@
-import { Profile } from '../../profiles/entities/profile.entity';
+import { Secretary } from '../../secretaries/entities/secretary.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 import { Doctor } from '../../doctors/entities/doctor.entity';
-import { Secretary } from 'src/secretaries/entities/secretary.entity';
+import { Profile } from '../../profiles/entities/profile.entity';
+import { Patient } from 'src/patients/entities/patient.entity';
 
 @Entity()
+@Unique(['document'])
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column({ nullable: false, unique: true })
+  document: string;
 
   @Column({ nullable: false })
   firstName: string;
@@ -41,6 +48,9 @@ export class User {
 
   @Column({ nullable: true, default: null })
   secretaryId: string;
+
+  @Column({ nullable: true, default: null })
+  patientId: string;
 
   @Column({ nullable: false, default: true })
   status: boolean;
@@ -74,4 +84,17 @@ export class User {
   )
   @JoinColumn({ name: 'secretaryId' })
   secretary?: Secretary;
+
+  @OneToOne(
+    () => Patient,
+    patient => patient.user,
+  )
+  @JoinColumn({ name: 'patientId' })
+  patient?: Patient;
+
+  @ManyToMany(
+    () => Patient,
+    patient => patient.users,
+  )
+  patients: Patient[];
 }

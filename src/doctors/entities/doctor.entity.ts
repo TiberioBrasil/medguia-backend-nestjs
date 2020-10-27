@@ -14,7 +14,7 @@ export class Doctor {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   userId: string;
 
   @Column({

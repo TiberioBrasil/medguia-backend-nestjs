@@ -1,11 +1,19 @@
-import { IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import {
+  IsDate,
+  IsOptional,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { Match } from '../../decorators/match.decorator';
 
-export class CreateUserDto {
+export class CreatePatientDto {
   @IsString()
-  @MinLength(11)
-  @MaxLength(11)
   readonly document: string;
+
+  @IsDate()
+  readonly birthdate: Date;
 
   @IsString()
   readonly firstName: string;
@@ -16,7 +24,7 @@ export class CreateUserDto {
   @IsString()
   readonly email: string;
 
-  @IsString()
+  @IsOptional()
   @MinLength(6)
   @MaxLength(72)
   @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
@@ -25,7 +33,7 @@ export class CreateUserDto {
   })
   readonly password: string;
 
-  @IsString()
+  @IsOptional()
   @Match('password', { message: 'The password confirmation does not match' })
   readonly passwordConfirmation: string;
 }

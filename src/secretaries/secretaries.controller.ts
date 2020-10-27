@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ActionGuard, RequireAction } from 'src/auth/action.guard';
-import { GetUserID } from '../auth/get-user-decorator';
+import { GetUserID } from '../decorators/get-user.decorator';
 import { UpdateSecretaryDto } from './dto/update-secretary.dto';
 import { Secretary } from './entities/secretary.entity';
 import { SecretariesService } from './secretaries.service';
@@ -20,14 +20,14 @@ export class SecretariesController {
 
   @Post()
   @RequireAction('secretaries.create')
-  async create(@GetUserID() getUserID): Promise<Secretary> {
+  async create(@GetUserID() getUserID: string): Promise<Secretary> {
     return await this.secretariesService.create(getUserID);
   }
 
   @Patch()
   @RequireAction('secretaries.update')
   async update(
-    @GetUserID() getUserID,
+    @GetUserID() getUserID: string,
     @Body() updateSecretaryDto: UpdateSecretaryDto,
   ): Promise<Secretary> {
     return await this.secretariesService.update(getUserID, updateSecretaryDto);
@@ -35,7 +35,7 @@ export class SecretariesController {
 
   @Delete()
   @RequireAction('secretaries.destroy')
-  async destroy(@GetUserID() getUserID): Promise<Secretary> {
+  async destroy(@GetUserID() getUserID: string): Promise<Secretary> {
     return await this.secretariesService.destroy(getUserID);
   }
 }

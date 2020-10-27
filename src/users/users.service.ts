@@ -38,12 +38,20 @@ export class UsersService {
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const checkIfUserExists = await this.usersRepository.find({
+    const checkIfUserExistsByEmail = await this.usersRepository.find({
       where: { email: createUserDto.email },
     });
 
-    if (checkIfUserExists.length > 0) {
-      throw new BadRequestException(`Email already registered`);
+    if (checkIfUserExistsByEmail.length > 0) {
+      throw new BadRequestException(`User email already registered`);
+    }
+
+    const checkIfUserExistsByDocument = await this.usersRepository.find({
+      where: { document: createUserDto.document },
+    });
+
+    if (checkIfUserExistsByDocument.length > 0) {
+      throw new BadRequestException(`User document already registered`);
     }
 
     const user = this.usersRepository.create(createUserDto);

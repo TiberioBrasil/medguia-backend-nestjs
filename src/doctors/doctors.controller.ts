@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ActionGuard, RequireAction } from 'src/auth/action.guard';
-import { GetUserID } from '../auth/get-user-decorator';
+import { GetUserID } from '../decorators/get-user.decorator';
 import { DoctorsService } from './doctors.service';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
 import { Doctor } from './entities/doctor.entity';
@@ -20,14 +20,14 @@ export class DoctorsController {
 
   @Post()
   @RequireAction('doctors.create')
-  async create(@GetUserID() getUserID): Promise<Doctor> {
+  async create(@GetUserID() getUserID: string): Promise<Doctor> {
     return await this.doctorsService.create(getUserID);
   }
 
   @Patch()
   @RequireAction('doctors.update')
   async update(
-    @GetUserID() getUserID,
+    @GetUserID() getUserID: string,
     @Body() updateDoctorDto: UpdateDoctorDto,
   ): Promise<Doctor> {
     return await this.doctorsService.update(getUserID, updateDoctorDto);
@@ -35,7 +35,7 @@ export class DoctorsController {
 
   @Delete()
   @RequireAction('doctors.destroy')
-  async destroy(@GetUserID() getUserID): Promise<Doctor> {
+  async destroy(@GetUserID() getUserID: string): Promise<Doctor> {
     return await this.doctorsService.destroy(getUserID);
   }
 }
