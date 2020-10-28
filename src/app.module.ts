@@ -13,6 +13,7 @@ import { PatientsModule } from './patients/patients.module';
 import { ProfilesModule } from './profiles/profiles.module';
 import { SecretariesModule } from './secretaries/secretaries.module';
 import { UsersModule } from './users/users.module';
+import { PlacesModule } from './places/places.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { UsersModule } from './users/users.module';
     SecretariesModule,
     PatientsModule,
     LocationsModule,
+    PlacesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

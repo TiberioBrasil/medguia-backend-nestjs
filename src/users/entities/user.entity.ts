@@ -15,6 +15,7 @@ import {
 import { Doctor } from '../../doctors/entities/doctor.entity';
 import { Profile } from '../../profiles/entities/profile.entity';
 import { Patient } from 'src/patients/entities/patient.entity';
+import { Place } from 'src/places/entities/place.entity';
 
 @Entity()
 @Unique(['document'])
@@ -97,4 +98,10 @@ export class User {
     patient => patient.users,
   )
   patients: Patient[];
+
+  @ManyToMany(
+    () => Place,
+    place => place.users,
+  )
+  places: Place[];
 }
